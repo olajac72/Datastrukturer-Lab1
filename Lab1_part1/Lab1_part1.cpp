@@ -1,5 +1,5 @@
 // Lab1_part1.cpp : This file contains the 'main' function. Program execution begins and ends there.
-// Datastrukturer och algoritmer
+// Datastrukturer och algoritmer vt 20
 
 #include <iostream>
 #include <list>
