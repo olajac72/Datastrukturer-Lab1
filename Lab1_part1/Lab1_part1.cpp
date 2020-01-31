@@ -14,10 +14,27 @@ void InsertStudentLinkedList(DoublyLinkedList& dllc);
 
 int main()
 {
-    bool exit = false;
-    list<Student> studentlist;
     int choice = 0;
+    StudentListTest slt;
     DoublyLinkedList dllc;
+
+    /*bool exit = false;
+    list<Student> studentlist;
+    
+    
+
+    vector<StudentListBase*> slb;
+
+    StudentList* sl = new StudentList();
+
+    slb.push_back(sl);
+
+    StudentLinkedList* sll = new StudentLinkedList();
+
+    slb.push_back(sll);
+
+    slb[0]->print();
+    slb[1]->print();*/
 
 /*
     while (choise != 4)
@@ -49,6 +66,7 @@ int main()
             InsertStudentLinkedList(dllc);
             break;
         case 2:
+            slt.generateTest();
             break;
         case 3:
             ViewStudentsLinkedList(dllc);
@@ -59,8 +77,6 @@ int main()
     }
 }
 
-
-
 void PrintMainMenu()
 {
     cout << "1 Insert student" << endl;
@@ -69,21 +85,220 @@ void PrintMainMenu()
     cout << "4 Exit program" << endl;
 }
 
-
-class Student
+void StudentListTest::generateTest()
 {
-public:
+    char tkn1, tkn2, tkn3;
+    int grade, credit;
     string name;
-    list<Course> courselist;
-};
+    Student* student;
+    Course* course;
+    unsigned int seed;
 
-class Course
+    DoublyLinkedList* dll;
+    Node* node;
+    DoublyLinkedListCourse* dllc;
+    NodeCourse* nodecourse;
+
+    sl = new StudentList();
+    sll = new StudentLinkedList();
+
+    auto clock = chrono::high_resolution_clock::now();
+    Sleep(100);
+    /* Implemented with list*/
+    auto start = chrono::high_resolution_clock::now();
+
+    for (int i = 0; i < 2; i++)
+    {
+        //https://en.cppreference.com/w/cpp/chrono/duration/duration_cast
+
+        auto t2 = std::chrono::high_resolution_clock::now();
+
+        auto int_ms = std::chrono::duration_cast<std::chrono::microseconds>(t2 - start);
+
+        std::chrono::duration<unsigned int, std::micro> int_usec = int_ms;
+
+        srand(int_usec.count());
+        tkn1 = rand() % (90 - 65) + 65;
+        tkn2 = rand() % (90 - 65) + 65;
+        tkn3 = rand() % (90 - 65) + 65;
+
+        //name = tkn1 + tkn2 + tkn3;
+        name.clear();
+        name += tkn1;
+        name += tkn2;
+        name += tkn3;
+
+        student = new Student();
+        student->name = name;
+
+        for (int j = 0; j < 2; j++)
+        {
+            auto t2 = std::chrono::high_resolution_clock::now();
+
+            auto int_ms = std::chrono::duration_cast<std::chrono::microseconds>(t2 - start);
+
+            std::chrono::duration<unsigned int, std::micro> int_usec = int_ms;
+
+            srand(int_usec.count());
+            course = new Course();
+           
+            tkn1 = rand() % (90 - 65) + 65;
+            tkn2 = rand() % (90 - 65) + 65;
+            tkn3 = rand() % (90 - 65) + 65;
+
+            //name = tkn1 + tkn2 + tkn3;
+            name.clear();
+            name += tkn1;
+            name += tkn2;
+            name += tkn3;
+
+            grade = rand() % 100 + 1;
+            credit = rand() % 100 + 1;
+
+            course->credit = credit;
+            course->grade = grade;
+            course->name = name;
+
+            student->courselist.push_back(*course);
+            delete course;
+
+        }
+        sl->studentlist.push_back(*student);
+        delete student;
+    }
+
+    slb.push_back(sl);
+
+    auto finish = chrono::high_resolution_clock::now();
+
+    chrono::duration<double> elapsed = finish - start;
+
+    cout << "Elapsed time list:" << elapsed.count() << endl;
+
+    /* Implemented with linkedlist*/
+
+    start = chrono::high_resolution_clock::now();
+
+    sll->dllp = new DoublyLinkedList();
+
+    dllc = new DoublyLinkedListCourse();
+
+
+    for (int i = 0; i < 2; i++)
+    {
+        
+        node = new Node();
+
+        auto t2 = std::chrono::high_resolution_clock::now();
+
+        auto int_ms = std::chrono::duration_cast<std::chrono::microseconds>(t2 - start);
+
+        std::chrono::duration<unsigned int, std::micro> int_usec = int_ms;
+
+        srand(int_usec.count());
+
+        tkn1 = rand() % (90 - 65) + 65;
+        tkn2 = rand() % (90 - 65) + 65;
+        tkn3 = rand() % (90 - 65) + 65;
+
+        //name = tkn1 + tkn2 + tkn3;
+        name.clear();
+        name += tkn1;
+        name += tkn2;
+        name += tkn3;
+
+        node->name = name;
+
+        sll->dllp->addtail(node);
+
+        for (int j = 0; j < 2; j++)
+        {
+            nodecourse = new NodeCourse();
+
+            auto t2 = std::chrono::high_resolution_clock::now();
+
+            auto int_ms = std::chrono::duration_cast<std::chrono::microseconds>(t2 - start);
+
+            std::chrono::duration<unsigned int, std::micro> int_usec = int_ms;
+
+            srand(int_usec.count());
+
+            tkn1 = rand() % (90 - 65) + 65;
+            tkn2 = rand() % (90 - 65) + 65;
+            tkn3 = rand() % (90 - 65) + 65;
+
+            //name = tkn1 + tkn2 + tkn3;
+            name.clear();
+            name += tkn1;
+            name += tkn2;
+            name += tkn3;
+
+            grade = rand() % 100 + 1;
+            credit = rand() % 100 + 1;
+
+            nodecourse->credit = credit;
+            nodecourse->grade = grade;
+            nodecourse->name = name;
+
+            dllc->addtail(nodecourse);
+           
+        }
+        
+        node->dllcourse = dllc;
+    }
+
+    slb.push_back(sll);
+
+    finish = chrono::high_resolution_clock::now();
+
+    elapsed = finish - start;
+
+    cout << "Elapsed time linked list:" << elapsed.count() << endl;
+
+    cout << "List" << endl;
+    slb[0]->print();
+    cout << "Linked list" << endl;
+    slb[1]->print();
+
+    delete sl;
+    delete sll;
+
+}
+
+void StudentList::print()
 {
-public:
-    string name;
-    float credit;
-    int grade;
-};
+    list<Student>::iterator it;
+
+    for (it = studentlist.begin(); it != studentlist.end(); ++it)
+    {
+        cout << it->name << endl;
+
+        list<Course>::iterator cit;
+
+        for (cit = it->courselist.begin(); cit != it->courselist.end(); ++cit)
+        {
+            cout << cit->name << endl;
+            cout << cit->credit << endl;
+            cout << cit->grade << endl << endl;
+        }
+    }
+}
+
+void StudentLinkedList::print()
+{
+    dllp->display_forward();
+   
+}
+
+StudentLinkedList::StudentLinkedList()
+{
+    dllp = new DoublyLinkedList();
+}
+
+StudentLinkedList::~StudentLinkedList()
+{
+    delete dllp;
+}
 
 void InsertStudent(list<Student>& sl)
 {
@@ -264,7 +479,7 @@ bool DoublyLinkedList::addtail(Node* data)
     data->prev->next = data;
     tail->prev = data;
 
-    cout << "Data : " << data->data << endl;
+    //cout << "Data : " << data->data << endl;
 
     numberofnodes++;
 
@@ -388,7 +603,9 @@ Node::Node()
 
 Node::~Node()
 {
-    dllcourse->~DoublyLinkedListCourse();
+    //delete dllcourse;
+
+    //dllcourse->~DoublyLinkedListCourse();
 }
 
 DoublyLinkedListCourse::~DoublyLinkedListCourse()
