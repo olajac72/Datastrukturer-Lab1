@@ -1,26 +1,28 @@
 // Lab1_part2.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include <iostream>
-#include <stack>
-#include <queue>
-#include <chrono>
-
-using namespace std;
-bool is_palindrome_with_stack(stack<char>& sto, stack<char>& stt);
-bool is_palindrome_with_queue(queue<char>& quo, queue<char>& qut);
+#include "Lab1_part2.h"
 
 int main()
 {
+	/*
 	stack<char> stackone;
 	stack<char> stacktwo;
 	queue<char> queueone;
 	queue<char> queuetwo;
+	
 	string palindrome;
+
 
 	cout << "Enter palindrome:";
 	cin >> palindrome;
+	*/
 
+	palindrometester pt;
+
+	pt.testpalindrome();
+
+	/*
 	stackone.empty();
 	stacktwo.empty();
 	queueone.empty();
@@ -75,6 +77,7 @@ int main()
 	elapsed = finish - start;
 
 	cout << "Queue elapsed time :" << elapsed.count() << endl;
+	*/
 }
 
 bool is_palindrome_with_stack(stack<char>& sto, stack<char>& stt)
@@ -124,4 +127,252 @@ bool is_palindrome(char testword[], int ll) {
 		}
 	}
 	return palindrome;
+}
+
+void palindrometester::testpalindrome()
+{
+	string st;
+	bool isPalindrome = false;
+
+	cout << "Enter string to test :";
+
+	cin >> st;
+
+	removechars(st);
+
+	// https://stackoverflow.com/questions/313970/how-to-convert-stdstring-to-lower-case
+
+	std::transform(st.begin(), st.end(), st.begin(),
+		[](unsigned char c) { return std::tolower(c); });
+	
+	
+
+	// Load stacks
+	for (int i = 0; i < st.length() ;i++)
+	{
+		scs1.push(st[i]);
+		scs2.push(st[st.length() - i - 1]);
+	}
+
+
+	// Load queues
+	for (int j = 0; j < st.length(); j++)
+	{ 
+		qcs1.enqueue(st[j]);
+		qcs2.enqueue(st[st.length() - 1 - j]);
+	}
+
+	if (teststacks() == true)
+		cout << "Stack IS palindrome" << endl;
+	else
+		cout << "Stack is NOT palindrome" << endl;
+
+	if (testqueues() == true)
+		cout << "Queue IS palindrome" << endl;
+	else
+		cout << "Queue is NOT palindrome" << endl;
+
+}
+
+void palindrometester::removechars(string& stringtoremove)
+{
+	string temp;
+
+	temp.clear();
+
+	for (int i = 0; i < stringtoremove.length(); i++)
+	{
+		if (stringtoremove[i] == ' ' || stringtoremove[i] == '.')
+		{
+
+		}
+		else
+		{
+			temp += stringtoremove[i];
+		}
+	}
+
+	stringtoremove.clear();
+	stringtoremove = temp;
+}
+
+bool palindrometester::teststacks()
+{
+	// Test stacks
+
+	while (scs1.isEmpty() == false && scs2.isEmpty() == false)
+	{
+		if (scs1.peek() != scs2.peek())
+			return false;
+
+		scs1.pop();
+		scs2.pop();
+	}
+	return true;
+}
+
+bool palindrometester::testqueues()
+{
+	while (qcs1.isEmpty() == false && qcs2.isEmpty() == false)
+	{
+		if (qcs1.peek() != qcs2.peek())
+			return false;
+
+		qcs1.dequeue();
+		qcs2.dequeue();
+	}
+
+}
+
+
+void queuecstyle::clear()
+{
+	front = 0;
+	rear = -1;
+	count = 0;
+}
+
+queuecstyle::queuecstyle(int size)
+{
+	arr = new char[size];
+	capacity = size;
+	front = 0;
+	rear = -1;
+	count = 0;
+}
+
+queuecstyle::~queuecstyle()
+{
+ 	delete[] arr;
+}
+
+void queuecstyle::dequeue()
+{
+	if (isEmpty())
+	{
+		cout << "Queue underflow" << endl;
+	}
+	else
+	{
+		cout << "Removeing " << arr[front] << endl;
+
+		for (int i = 1; i < count; i++)
+		{
+			arr[i - 1] = arr[i];
+		}
+		count--;
+	}
+}
+
+void queuecstyle::enqueue(char item)
+{
+	if (isFull())
+	{
+		cout << "Queue overflow" << endl;
+	}
+	else
+	{
+		cout << "Inserting " << item << endl;
+
+		//rear = (rear + 1) % capacity;
+		//arr[rear] = item;
+		
+		arr[count] = item;
+		count++;
+	}
+}
+
+char queuecstyle::peek()
+{
+	if (isEmpty())
+	{
+		cout << "Underflow" << endl;
+	}
+	else
+	{
+		return arr[front];
+	}
+}
+
+int queuecstyle::size()
+{
+	return count;
+}
+
+bool queuecstyle::isEmpty()
+{
+	return (size() == 0);
+}
+
+bool queuecstyle::isFull()
+{
+	return (size() == capacity);
+}
+
+void stackcstyle::clear()
+{
+	top = -1;
+}
+
+stackcstyle::stackcstyle(int size)
+{
+	arr = new char[size];
+	capacity = size;
+	top = -1;
+}
+
+stackcstyle::~stackcstyle()
+{
+	delete[] arr;
+} 
+
+void stackcstyle::push(char x)
+{
+	if (isFull())
+	{
+		cout << "Stack overflow" << endl;
+	}
+	else
+	{
+		cout << "Inserting " << x << endl;
+		arr[++top] = x;
+	}
+}
+
+char stackcstyle::pop()
+{
+	if (isEmpty())
+	{
+		cout << "Stack underflow" << endl;
+	}
+	else
+	{
+		cout << "Remove " << peek() << endl;
+		return arr[top--];
+	}
+}
+
+char stackcstyle::peek()
+{
+	if (!isEmpty())
+	{
+		return arr[top];
+	}
+	else
+		return 0;
+}
+
+int stackcstyle::size()
+{
+	return top + 1;
+}
+
+bool stackcstyle::isEmpty()
+{
+	return top == -1;
+}
+
+bool stackcstyle::isFull()
+{
+	return top == capacity - 1;
 }
