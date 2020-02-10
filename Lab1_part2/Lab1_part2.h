@@ -26,7 +26,7 @@ private:
 	int count;
 
 public:
-	queuecstyle(int size = 100);
+	queuecstyle(int size = 10000);
 	~queuecstyle();
 
 	void dequeue();
@@ -47,7 +47,7 @@ private:
 	int top;
 	int capacity;
 public:
-	stackcstyle(int size = 100);
+	stackcstyle(int size = 10000);
 	~stackcstyle();
 
 	void push(char);
@@ -68,4 +68,5 @@ public:
 	bool teststacks();
 	bool testqueues();
 	void removechars(string& stringtoremove);
+	void generatestring(string& st, int numberofchars);
 };

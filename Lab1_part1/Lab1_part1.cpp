@@ -85,6 +85,7 @@ void PrintMainMenu()
     cout << "4 Exit program" << endl;
 }
 
+
 void StudentListTest::generateTest()
 {
     char tkn1, tkn2, tkn3;
@@ -93,46 +94,29 @@ void StudentListTest::generateTest()
     Student* student;
     Course* course;
     unsigned int seed;
+    int numberofstudents = 1;
 
     DoublyLinkedList* dll;
     Node* node;
     DoublyLinkedListCourse* dllc;
     NodeCourse* nodecourse;
 
-    sl = new StudentList();
-    sll = new StudentLinkedList();
-
-    auto clock = chrono::high_resolution_clock::now();
-    Sleep(100);
-    /* Implemented with list*/
-    auto start = chrono::high_resolution_clock::now();
-
-    for (int i = 0; i < 2; i++)
+   
+    for (int x = 0; x < 3; x++)
     {
-        //https://en.cppreference.com/w/cpp/chrono/duration/duration_cast
+        sl = new StudentList();
+        sll = new StudentLinkedList();
 
-        auto t2 = std::chrono::high_resolution_clock::now();
+        numberofstudents *= 10;
+        auto clock = chrono::high_resolution_clock::now();
+        Sleep(100);
+        /* Implemented with list*/
+        auto start = chrono::high_resolution_clock::now();
 
-        auto int_ms = std::chrono::duration_cast<std::chrono::microseconds>(t2 - start);
-
-        std::chrono::duration<unsigned int, std::micro> int_usec = int_ms;
-
-        srand(int_usec.count());
-        tkn1 = rand() % (90 - 65) + 65;
-        tkn2 = rand() % (90 - 65) + 65;
-        tkn3 = rand() % (90 - 65) + 65;
-
-        //name = tkn1 + tkn2 + tkn3;
-        name.clear();
-        name += tkn1;
-        name += tkn2;
-        name += tkn3;
-
-        student = new Student();
-        student->name = name;
-
-        for (int j = 0; j < 2; j++)
+        for (int i = 0; i < numberofstudents; i++)
         {
+            //https://en.cppreference.com/w/cpp/chrono/duration/duration_cast
+
             auto t2 = std::chrono::high_resolution_clock::now();
 
             auto int_ms = std::chrono::duration_cast<std::chrono::microseconds>(t2 - start);
@@ -140,8 +124,6 @@ void StudentListTest::generateTest()
             std::chrono::duration<unsigned int, std::micro> int_usec = int_ms;
 
             srand(int_usec.count());
-            course = new Course();
-           
             tkn1 = rand() % (90 - 65) + 65;
             tkn2 = rand() % (90 - 65) + 65;
             tkn3 = rand() % (90 - 65) + 65;
@@ -152,68 +134,66 @@ void StudentListTest::generateTest()
             name += tkn2;
             name += tkn3;
 
-            grade = rand() % 100 + 1;
-            credit = rand() % 100 + 1;
+            student = new Student();
+            student->name = name;
 
-            course->credit = credit;
-            course->grade = grade;
-            course->name = name;
+            for (int j = 0; j < 2; j++)
+            {
+                auto t2 = std::chrono::high_resolution_clock::now();
 
-            student->courselist.push_back(*course);
-            delete course;
+                auto int_ms = std::chrono::duration_cast<std::chrono::microseconds>(t2 - start);
 
+                std::chrono::duration<unsigned int, std::micro> int_usec = int_ms;
+
+                srand(int_usec.count());
+                course = new Course();
+
+                tkn1 = rand() % (90 - 65) + 65;
+                tkn2 = rand() % (90 - 65) + 65;
+                tkn3 = rand() % (90 - 65) + 65;
+
+                //name = tkn1 + tkn2 + tkn3;
+                name.clear();
+                name += tkn1;
+                name += tkn2;
+                name += tkn3;
+
+                grade = rand() % 100 + 1;
+                credit = rand() % 100 + 1;
+
+                course->credit = credit;
+                course->grade = grade;
+                course->name = name;
+
+                student->courselist.push_back(*course);
+                delete course;
+
+            }
+            sl->studentlist.push_back(*student);
+            delete student;
         }
-        sl->studentlist.push_back(*student);
-        delete student;
-    }
 
-    slb.push_back(sl);
+        slb.push_back(sl);
 
-    auto finish = chrono::high_resolution_clock::now();
+        auto finish = chrono::high_resolution_clock::now();
 
-    chrono::duration<double> elapsed = finish - start;
+        chrono::duration<double> elapsed = finish - start;
+        cout << "Number of students : " << numberofstudents << endl;
+        cout << "Elapsed time list:" << elapsed.count() << endl;
 
-    cout << "Elapsed time list:" << elapsed.count() << endl;
+        /* Implemented with linkedlist*/
 
-    /* Implemented with linkedlist*/
+        start = chrono::high_resolution_clock::now();
 
-    start = chrono::high_resolution_clock::now();
+        sll->dllp = new DoublyLinkedList();
 
-    sll->dllp = new DoublyLinkedList();
-
-    dllc = new DoublyLinkedListCourse();
+        dllc = new DoublyLinkedListCourse();
 
 
-    for (int i = 0; i < 2; i++)
-    {
-        
-        node = new Node();
-
-        auto t2 = std::chrono::high_resolution_clock::now();
-
-        auto int_ms = std::chrono::duration_cast<std::chrono::microseconds>(t2 - start);
-
-        std::chrono::duration<unsigned int, std::micro> int_usec = int_ms;
-
-        srand(int_usec.count());
-
-        tkn1 = rand() % (90 - 65) + 65;
-        tkn2 = rand() % (90 - 65) + 65;
-        tkn3 = rand() % (90 - 65) + 65;
-
-        //name = tkn1 + tkn2 + tkn3;
-        name.clear();
-        name += tkn1;
-        name += tkn2;
-        name += tkn3;
-
-        node->name = name;
-
-        sll->dllp->addtail(node);
-
-        for (int j = 0; j < 2; j++)
+        for (int i = 0; i < 2; i++)
         {
-            nodecourse = new NodeCourse();
+
+            node = new Node();
 
             auto t2 = std::chrono::high_resolution_clock::now();
 
@@ -233,35 +213,66 @@ void StudentListTest::generateTest()
             name += tkn2;
             name += tkn3;
 
-            grade = rand() % 100 + 1;
-            credit = rand() % 100 + 1;
+            node->name = name;
 
-            nodecourse->credit = credit;
-            nodecourse->grade = grade;
-            nodecourse->name = name;
+            sll->dllp->addtail(node);
 
-            dllc->addtail(nodecourse);
-           
+            for (int j = 0; j < 2; j++)
+            {
+                nodecourse = new NodeCourse();
+
+                auto t2 = std::chrono::high_resolution_clock::now();
+
+                auto int_ms = std::chrono::duration_cast<std::chrono::microseconds>(t2 - start);
+
+                std::chrono::duration<unsigned int, std::micro> int_usec = int_ms;
+
+                srand(int_usec.count());
+
+                tkn1 = rand() % (90 - 65) + 65;
+                tkn2 = rand() % (90 - 65) + 65;
+                tkn3 = rand() % (90 - 65) + 65;
+
+                //name = tkn1 + tkn2 + tkn3;
+                name.clear();
+                name += tkn1;
+                name += tkn2;
+                name += tkn3;
+
+                grade = rand() % 100 + 1;
+                credit = rand() % 100 + 1;
+
+                nodecourse->credit = credit;
+                nodecourse->grade = grade;
+                nodecourse->name = name;
+
+                dllc->addtail(nodecourse);
+
+            }
+
+            node->dllcourse = dllc;
         }
-        
-        node->dllcourse = dllc;
+
+        slb.push_back(sll);
+
+        finish = chrono::high_resolution_clock::now();
+
+        elapsed = finish - start;
+
+        cout << "Number of students : " << numberofstudents << endl;
+        cout << "Elapsed time linked list:" << elapsed.count() << endl;
+
+        delete sl;
+        delete sll;
     }
 
-    slb.push_back(sll);
-
-    finish = chrono::high_resolution_clock::now();
-
-    elapsed = finish - start;
-
-    cout << "Elapsed time linked list:" << elapsed.count() << endl;
-
-    cout << "List" << endl;
+    /*cout << "List" << endl;
     slb[0]->print();
     cout << "Linked list" << endl;
-    slb[1]->print();
+    slb[1]->print();*/
 
-    delete sl;
-    delete sll;
+   // delete sl;
+   // delete sll;
 
 }
 
@@ -523,7 +534,7 @@ bool DoublyLinkedList::add(Node* data, int pos)
     }
 
     numberofnodes++;
-    cout << "Data : " << data->data << endl;
+    //cout << "Data : " << data->data << endl;
     return true;
 }
 
@@ -657,7 +668,7 @@ bool DoublyLinkedListCourse::addtail(NodeCourse* data)
     data->prev->next = data;
     tail->prev = data;
 
-    cout << "Data : " << data->data << endl;
+    //cout << "Data : " << data->data << endl;
 
     numberofnodes++;
 
@@ -701,7 +712,7 @@ bool DoublyLinkedListCourse::add(NodeCourse* data, int pos)
     }
 
     numberofnodes++;
-    cout << "Data : " << data->data << endl;
+    //cout << "Data : " << data->data << endl;
     return true;
 }
 

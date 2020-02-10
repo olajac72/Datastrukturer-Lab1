@@ -133,45 +133,96 @@ void palindrometester::testpalindrome()
 {
 	string st;
 	bool isPalindrome = false;
+	int numofchars = 1;
+	//cout << "Enter string to test :";
 
-	cout << "Enter string to test :";
+	//cin >> st;
 
-	cin >> st;
-
-	removechars(st);
-
-	// https://stackoverflow.com/questions/313970/how-to-convert-stdstring-to-lower-case
-
-	std::transform(st.begin(), st.end(), st.begin(),
-		[](unsigned char c) { return std::tolower(c); });
-	
-	
-
-	// Load stacks
-	for (int i = 0; i < st.length() ;i++)
+	for (int i = 1; i <= 4; i++)
 	{
-		scs1.push(st[i]);
-		scs2.push(st[st.length() - i - 1]);
+		scs1.clear();
+		scs2.clear();
+		qcs1.clear();
+		qcs2.clear();
+
+		numofchars *= 10;
+		generatestring(st, numofchars);
+
+		removechars(st);
+
+		// https://stackoverflow.com/questions/313970/how-to-convert-stdstring-to-lower-case
+
+		std::transform(st.begin(), st.end(), st.begin(),
+			[](unsigned char c) { return std::tolower(c); });
+
+		// Load stacks
+		for (int i = 0; i < (st.length() / 2); i++)
+		{
+			scs1.push(st[i]);
+			scs2.push(st[st.length() - i - 1]);
+		}
+
+		// Load queues
+		for (int j = 0; j < (st.length() / 2); j++)
+		{
+			qcs1.enqueue(st[j]);
+			qcs2.enqueue(st[st.length() - 1 - j]);
+		}
+
+		auto start = chrono::high_resolution_clock::now();
+
+		if (teststacks() == true)
+			cout << "Stack IS palindrome" << endl;
+		else
+			cout << "Stack is NOT palindrome" << endl;
+
+		auto t2 = std::chrono::high_resolution_clock::now();
+
+		auto int_ms = std::chrono::duration_cast<std::chrono::microseconds>(t2 - start);
+
+		std::chrono::duration<unsigned int, std::micro> int_usec = int_ms;
+
+		cout << "Stack " << numofchars << " characters took : " << int_usec.count() << endl;
+
+		start = chrono::high_resolution_clock::now();
+
+		if (testqueues() == true)
+			cout << "Queue IS palindrome" << endl;
+		else
+			cout << "Queue is NOT palindrome" << endl;
+
+		t2 = std::chrono::high_resolution_clock::now();
+
+		int_ms = std::chrono::duration_cast<std::chrono::microseconds>(t2 - start);
+
+		int_usec = int_ms;
+
+		cout << "Queue " << numofchars << " characters took : " << int_usec.count() << endl;
+
+		
 	}
+}
 
+void palindrometester::generatestring(string& st, int numberofchars)
+{
+	char tkn;
+	st.clear();
+	auto start = chrono::high_resolution_clock::now();
 
-	// Load queues
-	for (int j = 0; j < st.length(); j++)
-	{ 
-		qcs1.enqueue(st[j]);
-		qcs2.enqueue(st[st.length() - 1 - j]);
+	for (int i = 1; i < numberofchars; i++)
+	{
+		auto t2 = std::chrono::high_resolution_clock::now();
+
+		auto int_ms = std::chrono::duration_cast<std::chrono::microseconds>(t2 - start);
+
+		std::chrono::duration<unsigned int, std::micro> int_usec = int_ms;
+
+		srand(int_usec.count());
+		tkn = rand() % (90 - 65) + 65;
+
+		//st += tkn;
+		st += 'A';
 	}
-
-	if (teststacks() == true)
-		cout << "Stack IS palindrome" << endl;
-	else
-		cout << "Stack is NOT palindrome" << endl;
-
-	if (testqueues() == true)
-		cout << "Queue IS palindrome" << endl;
-	else
-		cout << "Queue is NOT palindrome" << endl;
-
 }
 
 void palindrometester::removechars(string& stringtoremove)
@@ -254,7 +305,7 @@ void queuecstyle::dequeue()
 	}
 	else
 	{
-		cout << "Removeing " << arr[front] << endl;
+		//cout << "Removeing " << arr[front] << endl;
 
 		for (int i = 1; i < count; i++)
 		{
@@ -272,7 +323,7 @@ void queuecstyle::enqueue(char item)
 	}
 	else
 	{
-		cout << "Inserting " << item << endl;
+		//cout << "Inserting " << item << endl;
 
 		//rear = (rear + 1) % capacity;
 		//arr[rear] = item;
@@ -334,7 +385,7 @@ void stackcstyle::push(char x)
 	}
 	else
 	{
-		cout << "Inserting " << x << endl;
+		//cout << "Inserting " << x << endl;
 		arr[++top] = x;
 	}
 }
@@ -347,7 +398,7 @@ char stackcstyle::pop()
 	}
 	else
 	{
-		cout << "Remove " << peek() << endl;
+		//cout << "Remove " << peek() << endl;
 		return arr[top--];
 	}
 }
